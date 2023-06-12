@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'influens-backend'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F0E2F7900A0E4FD98D39DBC35724E209 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8306692FB8624192A0003E5408C558B7 }}
