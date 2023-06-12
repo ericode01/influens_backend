@@ -16,7 +16,7 @@ class DatabaseController:
                 db='influence',
                 port=3306,
                 ssl_disabled=False,
-                ssl_ca='C:\\Users\\600er\\Documents\\chatgpt\\DigiCertGlobalRootG2.crt.pem'
+                ssl_ca='cert/DigiCertGlobalRootG2.crt.pem'
             )
         else:
             conn = pymysql.connect(
