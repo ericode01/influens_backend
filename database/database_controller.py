@@ -26,6 +26,8 @@ class DatabaseController:
                 db='influence',
             )
 
+        conn.autocommit(True)
+
         return conn
 
     def get_script_generators(self, user_id):

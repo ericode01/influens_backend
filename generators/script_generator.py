@@ -10,7 +10,7 @@ class ScriptGenerator:
         self.database_controller = DatabaseController()
         self.script_generato_prompt_manager = ScriptGeneratorPromptManager()
         self.openai_wrapper = OpenAIWrapper()
-        self.openai_fast_model = "gpt-3.5-turbo"
+        self.openai_fast_model = "gpt-3.5-turbo-0613"
         self.fast_token_limit = 1500
         self.use_openai = True
 

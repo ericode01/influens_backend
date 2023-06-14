@@ -1,9 +1,8 @@
 from llm.base import Message
 
-
 class ScriptGeneratorPromptManager:
     def __init__(self):
-        with open('../prompt_templates/script_generator_three_options_prompt_template.txt', 'r', encoding='utf-8') as file:
+        with open('prompt_templates/script_generator_three_options_prompt_template.txt', 'r', encoding='utf-8') as file:
             self.script_generator_three_options_prompt_template = file.read()
 
     def create_script_generator_prompt(self, recent_scripts, target_product_name, target_keywords_desc,
