@@ -334,3 +334,42 @@ class DatabaseController:
         conn.close()
 
         return user, password_hash
+
+    def add_script_generator(self,
+                             user_id,
+                             script_generator_name,
+                             product_names,
+                             keywords_descs,
+                             scripts,
+                             created_timestamp,
+                             last_updated_timestamp):
+
+        # To connect MySQL database
+        conn = self.get_mysql_connection()
+        conn.autocommit(False)
+
+        cur = conn.cursor()
+        cur.execute(
+            f"insert into script_generators (name, created_timestamp, user_id) values ( \"{script_generator_name}\", \"{created_timestamp.strftime('%Y-%m-%d %H:%M:%S')}\",{user_id};")
+        new_script_generator_id = cur.lastrowid
+
+        new_recent_script_ids = []
+        for index in range(len(product_names)):
+            product_name = product_names[index]
+            keywords_desc = keywords_descs[index]
+            script = scripts[index]
+
+            cur.execute(
+                f"insert into recent_scripts (product_name,keywords_desc,script,status,created_timestamp,last_updated_timestamp,script_generator_id) values ( \"{product_name}\", \"{keywords_desc}\",\"{script}\",\"COMPLETED\",\"{created_timestamp.strftime('%Y-%m-%d %H:%M:%S')}\",\"{last_updated_timestamp.strftime('%Y-%m-%d %H:%M:%S')}\",{new_script_generator_id});")
+            new_recent_script_ids.append(cur.lastrowid)
+
+        cur.close()
+        conn.commit()
+
+        # To close the connection
+        conn.close()
+
+        response_json = {"new_script_generator_id": new_script_generator_id,
+                         "new_recent_script_ids": new_recent_script_ids}
+        response = json.dumps(response_json)
+        return response
