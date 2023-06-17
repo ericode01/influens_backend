@@ -13,7 +13,7 @@ class DatabaseController:
                 host='influens-mysql.mysql.database.azure.com',
                 user='eric_admin',
                 password="influens1!",
-                db='influence',
+                db='influens',
                 port=3306,
                 ssl_disabled=False,
                 ssl_ca='cert/DigiCertGlobalRootG2.crt.pem'
