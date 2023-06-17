@@ -34,7 +34,7 @@ class DatabaseController:
         # To connect MySQL database
         conn = self.get_mysql_connection()
 
-        query = f"select script_generator_id, name, created_timestamp, name_concat from script_generators where user_id = {user_id}  order by created_timestamp desc;"
+        query = f"select script_generator_id, name, created_timestamp from script_generators where user_id = {user_id}  order by created_timestamp desc;"
         cur = conn.cursor()
 
         # Select query
@@ -45,9 +45,7 @@ class DatabaseController:
             print(i)
 
         script_generators = [
-            {"script_generator_id": row[0], "name": row[1], "created_timestamp": row[2].strftime("%H:%M:%S, %B %d, %Y"),
-             "name_concat": row[3]} for row in
-            script_generators_rows]
+            {"script_generator_id": row[0], "name": row[1], "created_timestamp": row[2].strftime("%H:%M:%S, %B %d, %Y")} for row in script_generators_rows]
         response_json = {"script_generators": script_generators}
         response = json.dumps(response_json)
 
@@ -88,39 +86,39 @@ class DatabaseController:
 
         return response
 
-    def get_recent_scripts_by_name(self, script_generator_name_concat):
-        # To connect MySQL database
-        conn = self.get_mysql_connection()
-
-        query = f"select rc.recent_script_id, rc.product_name, " \
-                " rc.status, rc.created_timestamp, rc.last_updated_timestamp, rc.script_generator_id, sg.name_concat, sg.name " \
-                "from script_generators sg, recent_scripts rc " \
-                "where sg.script_generator_id= rc.script_generator_id " \
-                "and sg.name_concat = \"" + script_generator_name_concat + "\" and rc.status <> \"DELETED\" " \
-                                                                           "order by created_timestamp desc;"
-
-        cur = conn.cursor()
-
-        # Select query
-        cur.execute(query)
-        recent_scripts_rows = cur.fetchall()
-
-        for i in recent_scripts_rows:
-            print(i)
-
-        recent_scripts = [
-            {"recent_script_id": row[0], "product_name": row[1],
-             "status": row[2], "created_timestamp": row[3].strftime("%H:%M:%S, %B %d, %Y"),
-             "last_updated_timestamp": row[4].strftime("%H:%M:%S, %B %d, %Y"), "script_generator_id": row[5],
-             "script_generator_name_concat": row[6], "script_generator_name": row[7]} for row in
-            recent_scripts_rows]
-        response_json = {"recent_scripts": recent_scripts}
-        response = json.dumps(response_json)
-
-        # To close the connection
-        conn.close()
-
-        return response
+    # def get_recent_scripts_by_name(self, script_generator_name_concat):
+    #     # To connect MySQL database
+    #     conn = self.get_mysql_connection()
+    #
+    #     query = f"select rc.recent_script_id, rc.product_name, " \
+    #             " rc.status, rc.created_timestamp, rc.last_updated_timestamp, rc.script_generator_id, sg.name_concat, sg.name " \
+    #             "from script_generators sg, recent_scripts rc " \
+    #             "where sg.script_generator_id= rc.script_generator_id " \
+    #             "and sg.name_concat = \"" + script_generator_name_concat + "\" and rc.status <> \"DELETED\" " \
+    #                                                                        "order by created_timestamp desc;"
+    #
+    #     cur = conn.cursor()
+    #
+    #     # Select query
+    #     cur.execute(query)
+    #     recent_scripts_rows = cur.fetchall()
+    #
+    #     for i in recent_scripts_rows:
+    #         print(i)
+    #
+    #     recent_scripts = [
+    #         {"recent_script_id": row[0], "product_name": row[1],
+    #          "status": row[2], "created_timestamp": row[3].strftime("%H:%M:%S, %B %d, %Y"),
+    #          "last_updated_timestamp": row[4].strftime("%H:%M:%S, %B %d, %Y"), "script_generator_id": row[5],
+    #          "script_generator_name_concat": row[6], "script_generator_name": row[7]} for row in
+    #         recent_scripts_rows]
+    #     response_json = {"recent_scripts": recent_scripts}
+    #     response = json.dumps(response_json)
+    #
+    #     # To close the connection
+    #     conn.close()
+    #
+    #     return response
 
     def get_recent_script(self, recent_script_id):
         # To connect MySQL database
@@ -348,9 +346,18 @@ class DatabaseController:
         conn = self.get_mysql_connection()
         conn.autocommit(False)
 
+        print(user_id)
+        print(script_generator_name)
+        print(product_names)
+        print(keywords_descs)
+        print(scripts)
+        print(created_timestamp)
+        print(last_updated_timestamp)
+
         cur = conn.cursor()
-        cur.execute(
-            f"insert into script_generators (name, created_timestamp, user_id) values ( \"{script_generator_name}\", \"{created_timestamp.strftime('%Y-%m-%d %H:%M:%S')}\",{user_id};")
+        insert_script_generators_query = f"insert into script_generators (name, created_timestamp, user_id) values ( \"{script_generator_name}\", \"{created_timestamp.strftime('%Y-%m-%d %H:%M:%S')}\",{user_id});"
+        print(insert_script_generators_query)
+        cur.execute(insert_script_generators_query)
         new_script_generator_id = cur.lastrowid
 
         new_recent_script_ids = []
