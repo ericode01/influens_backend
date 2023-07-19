@@ -11,7 +11,9 @@ class ScriptGenerator:
         self.script_generato_prompt_manager = ScriptGeneratorPromptManager()
         self.openai_wrapper = OpenAIWrapper()
         self.openai_fast_model = "gpt-3.5-turbo-0613"
+        self.openai_gpt4_model = "gpt-4"
         self.fast_token_limit = 1500
+        self.gpt4_token_limit = 6000
         self.use_openai = True
 
     def generate_script_options(self, script_generator_id:int, product_name, keywords_or_desc):
@@ -24,8 +26,8 @@ class ScriptGenerator:
                 target_keywords_desc=keywords_or_desc,
                 influencer_name="yesstella")
 
-            response = self.openai_wrapper.create_chat_completion(messages=messages, model=self.openai_fast_model,
-                                                                  temperature=1, max_tokens=self.fast_token_limit)
+            response = self.openai_wrapper.create_chat_completion(messages=messages, model=self.openai_gpt4_model,
+                                                                  temperature=1, max_tokens=self.gpt4_token_limit)
             print(f"[ScriptGenerator.generate_script_options()] get_response_from_openai: {response}")
             return response
 
