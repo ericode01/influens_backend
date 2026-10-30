@@ -1,6 +1,14 @@
 import json
+import os
 
 import pymysql
+
+
+def get_mysql_password():
+    password = os.environ.get("MYSQL_PASSWORD")
+    if not password:
+        raise RuntimeError("MYSQL_PASSWORD environment variable is not set")
+    return password
 
 
 class DatabaseController:
@@ -12,7 +20,7 @@ class DatabaseController:
             conn = pymysql.connect(
                 host='influens-mysql.mysql.database.azure.com',
                 user='eric_admin',
-                password="influens1!",
+                password=get_mysql_password(),
                 db='influens',
                 port=3306,
                 ssl_disabled=False,
@@ -22,7 +30,7 @@ class DatabaseController:
             conn = pymysql.connect(
                 host='localhost',
                 user='root',
-                password="123456",
+                password=get_mysql_password(),
                 db='influence',
             )
 

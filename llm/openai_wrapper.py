@@ -1,3 +1,4 @@
+import os
 import time
 import openai
 from openai.error import APIError, RateLimitError, Timeout
@@ -9,7 +10,9 @@ class OpenAIWrapper:
 
     def __init__(self):
         self.use_azure = False
-        self.openai_api_key = "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"
+        self.openai_api_key = os.environ.get("OPENAI_API_KEY")
+        if not self.openai_api_key:
+            raise RuntimeError("OPENAI_API_KEY environment variable is not set")
 
     # Overly simple abstraction until we create something better
     # simple retry mechanism when getting a rate error or a bad gateway
